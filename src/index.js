@@ -18,10 +18,13 @@ ReactDOM.render(
   <Provider store={configureStore()}>
     <div style={{ padding: 15 }}>
       <h2 style={{ padding: 15 }}>Simple Form</h2>
-      <SimpleForm form="personForm" handleSubmit={(e) => {
-        e.preventDefault();
-        console.log(e.target)
-      }} />
+      <SimpleForm
+        form="personForm"
+        handleSubmit={e => {
+          e.preventDefault();
+          console.log(e.target);
+        }}
+      />
       <PersonList form="list" />
     </div>
   </Provider>,
