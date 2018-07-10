@@ -1,6 +1,5 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
-import { createStore, combineReducers } from "redux";
 import { reducer as reduxFormReducer } from "redux-form";
 import { connect } from "react-redux";
 import { postPeople } from "../../actions/simpleForm";
@@ -16,21 +15,20 @@ class simpleForm extends React.Component {
     // this.props.postPeople();
   }
 
-  handleSubmit (e) {
-    e.preventDefault()
+  handleSubmit(e) {
+    e.preventDefault();
 
-    if(!this.props.data) return;
-    
+    if (!this.props.data) return;
+
     this.props.postPeople(this.props.data.values);
-    this.props.fetchPeople(); 
+    this.props.fetchPeople();
   }
 
   render() {
-    // const { pristine, reset, submitting } = this.props;
+    const { pristine, reset, submitting } = this.props;
 
     return (
       <div>
-        { JSON.stringify(this.props.data)}
         <form onSubmit={this.handleSubmit.bind(this)}>
           <div>
             <label>First name</label>
@@ -51,7 +49,9 @@ class simpleForm extends React.Component {
             />
           </div>
           <div>
-            <button type="submit">Register</button>
+            <button type="submit" disabled={pristine}>
+              Register
+            </button>
           </div>
         </form>
       </div>
@@ -66,9 +66,11 @@ const mapStateToProps = store => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators({ postPeople, fetchPeople }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
-  form: "list" // a unique identifier for this form
-})(simpleForm));
+export default connect(mapStateToProps, mapDispatchToProps)(
+  reduxForm({
+    form: "list" // a unique identifier for this form
+  })(simpleForm)
+);
 
 /*
         <form onSubmit={handleSubmit}>
