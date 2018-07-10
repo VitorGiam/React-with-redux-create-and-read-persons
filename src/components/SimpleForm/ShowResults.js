@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import withStyles from "./PersonList";
+
 import { createStore, combineReducers } from "redux";
 import { reducer as reduxFormReducer } from "redux-form";
 
@@ -12,11 +12,6 @@ export default (async function showResults(values) {
 
   axios
     .post("/persons", data)
-    .then(function(response) {
-      <withStyles />;
-      console.log(response);
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
+    .then(function(response) {})
+    .catch(function(error) {});
 });

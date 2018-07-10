@@ -1,38 +1,60 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
+import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-// import WithFetching from "./TableBody";
-// import Styles from "./Styles";
+import { connect } from "react-redux";
+import { fetchPeople } from "../../actions/personList";
+import { bindActionCreators } from "redux";
 
-function personListCompose(props) {
-  const { classes } = props;
+class personList extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-  return (
-    <div className={classes.div}>
-      <Paper className={classes.root}>
-        <Table className={classes.table}>
-          <TableHead>
-            <h1 className={classes.thead}>Lista de carros</h1>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Nome</TableCell>
-              <TableCell>Sobre nome</TableCell>
-            </TableRow>
-          </TableHead>
-          <WithFetching />
-        </Table>
-      </Paper>
-    </div>
-  );
+  componentDidMount() {
+    this.props.fetchPeople();
+  }
+
+  render() {
+    console.log(this.props);
+    return (
+      <div>
+        <Paper>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Last name</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {this.props.people.map(person => {
+                return (
+                  <TableRow>
+                    <TableCell>{person.id}</TableCell>
+                    <TableCell>{person.name}</TableCell>
+                    <TableCell>{person.lastName}</TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </Paper>
+      </div>
+    );
+  }
 }
 
-personListCompose.propTypes = {
-  classes: PropTypes.object.isRequired
+const mapStateToProps = store => {
+  return { people: store.personReducer.people };
 };
 
-export default withStyles(Styles)(personListCompose);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ fetchPeople }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(personList);
